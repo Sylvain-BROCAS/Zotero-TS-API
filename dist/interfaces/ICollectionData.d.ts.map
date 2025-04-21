@@ -1,0 +1,1 @@
+{"version":3,"file":"ICollectionData.d.ts","sourceRoot":"","sources":["../../src/interfaces/ICollectionData.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,eAAe;IAC9B,GAAG,EAAE,MAAM,CAAC;IACZ,OAAO,EAAE,MAAM,CAAC;IAChB,IAAI,EAAE,MAAM,CAAC;IACb,gBAAgB,CAAC,EAAE,MAAM,CAAC;IAC1B,SAAS,CAAC,EAAE,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,CAAC;CACpC"}

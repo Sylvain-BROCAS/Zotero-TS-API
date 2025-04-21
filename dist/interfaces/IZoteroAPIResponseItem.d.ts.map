@@ -1,0 +1,1 @@
+{"version":3,"file":"IZoteroAPIResponseItem.d.ts","sourceRoot":"","sources":["../../src/interfaces/IZoteroAPIResponseItem.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,SAAS,EAAE,MAAM,aAAa,CAAC;AAExC,MAAM,WAAW,sBAAsB;IACnC,GAAG,EAAE,MAAM,CAAC;IACZ,OAAO,EAAE,MAAM,CAAC;IAChB,OAAO,EAAE,GAAG,CAAC;IACb,IAAI,EAAE,SAAS,CAAC;CACjB"}
