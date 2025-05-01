@@ -161,5 +161,6 @@ classDiagram
     Library --> ZCollection : "has many"
     ZCollection --> Item : "contains"
     Item --> ZCreator : "has many"
-    Item --> ZTag : "has many"```
+    Item --> ZTag : "has many"
+```
     
