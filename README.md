@@ -124,7 +124,7 @@ constructor(data: ITagData)
 ---
 Below is a diagram illustrating the relationships between the main entities:
 
-```Mermaid
+```mermaid
 classDiagram
     class Library {
         +connect(): Promise<void>
@@ -161,5 +161,6 @@ classDiagram
     Library --> ZCollection : "has many"
     ZCollection --> Item : "contains"
     Item --> ZCreator : "has many"
-    Item --> ZTag : "has many"```
+    Item --> ZTag : "has many"
+```
     
