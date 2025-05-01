@@ -16,7 +16,7 @@
     "test": "echo \"No tests yet\" && exit 0"
   },
   "keywords": ["zotero", "typescript", "api"],
-  "author": "Ton Nom",
+  "author": "Sylvain BROCAS",
   "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
