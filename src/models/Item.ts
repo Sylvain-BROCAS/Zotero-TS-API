@@ -1,6 +1,7 @@
 import { IItemData } from '../interfaces/IItemData';
 import { ZCreator } from './ZCreator';
 import { ZTag } from './ZTag';
+
 export class Item {
   private data: IItemData;
   private apiKey: string;
@@ -28,12 +29,46 @@ export class Item {
     return this.data.itemType;
   }
 
-  get creators(): ZCreator[] {
-    return this.data.creators.map(creator => new ZCreator(creator));
+
+  get url(): string | undefined {
+    return this.data.url;
+  }
+
+  get abstractNote(): string | undefined {
+    return this.data.abstractNote;
+  }
+
+  get date(): string | undefined {
+    return this.data.date;
+  }
+
+  get language(): string | undefined {
+    return this.data.language;
   }
 
   get tags(): ZTag[] {
     return this.data.tags.map(tag => new ZTag(tag));
+  }
+
+  get creators(): ZCreator[] {
+    return this.data.creators.map(creator => new ZCreator(creator));
+  }
+
+  // Setters for new fields
+  set url(value: string | undefined) {
+    this.data.url = value;
+  }
+
+  set abstractNote(value: string | undefined) {
+    this.data.abstractNote = value;
+  }
+
+  set date(value: string | undefined) {
+    this.data.date = value;
+  }
+
+  set language(value: string | undefined) {
+    this.data.language = value;
   }
 
   set title(value: string) {
