@@ -30,6 +30,11 @@ if (!apiKey || !id || !type) {
     console.log(`Item Key: ${item.key}`);
     console.log(`Title: ${item.title}`);
     console.log(`Item Type: ${item.itemType}`);
+    console.log(`URL: ${item.url}`);
+    console.log(`Date : ${item.date}`);
+    console.log(`Abstract note: ${item.abstractNote}`);
+    console.log(`Language: ${item.language}`);
+    console.log(`tags: ${item.tags.map(tag => tag.tag).join(', ')}`);
     // item.delete(); // Suppression de l'élément    
   });
 })();
