@@ -1,0 +1,21 @@
+# Ignorer le répertoire node_modules
+node_modules
+
+# Ignorer les fichiers de configuration de l'éditeur
+.vscode
+.idea
+
+# Ignorer les fichiers de test
+__tests__
+*.spec.ts
+*.test.ts
+
+# Ignorer les fichiers de build locaux
+build
+
+# Ignorer les fichiers de configuration locaux
+.env
+.DS_Store
+
+# Ignorer les fichiers sources TypeScript si vous publiez uniquement le JavaScript compilé
+src
