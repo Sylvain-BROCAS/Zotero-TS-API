@@ -32,12 +32,12 @@ import { Library } from 'zotero-ts-api';
 // Load environment variables
 config();
 
-const apiKey = process.env.ZOTERO_API_KEY!;
-const groupId = process.env.ZOTERO_GROUP_ID!;
+const apiKey = process.env.ZOTERO_API_KEY;
+const groupId = process.env.ZOTERO_GROUP_ID;
 const libraryType = 'groups'; // or 'users', then use a user API Key
 
 (async () => {
-  const library = new Library(apiKey, groupId, libraryType);
+  const library = new Library(apiKey, id, type);
   await library.connect();
 
   console.log(`Connected to library: ${library.name}`);
@@ -47,6 +47,13 @@ const libraryType = 'groups'; // or 'users', then use a user API Key
 
   const items = await library.getAllItems();
   console.log(`Found ${items.length} items`);
+
+  items.forEach(item => {
+    console.log(`Item Key: ${item.key}`);
+    console.log(`Title: ${item.title}`);
+    console.log(`Item Type: ${item.itemType}`);
+    // item.delete(); // Suppression de l'élément    
+  });
 })();
 ```
 ## References
