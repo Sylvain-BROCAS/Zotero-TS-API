@@ -1,22 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",                      // Version de JavaScript à laquelle compiler
-    "module": "commonjs",                 // Système de module à utiliser
-    "strict": true,                       // Activer toutes les vérifications strictes
-    "esModuleInterop": true,              // Activer l'interopérabilité entre CommonJS et ES Modules
-    "skipLibCheck": true,                 // Ignorer la vérification des fichiers de déclaration
-    "forceConsistentCasingInFileNames": true, // Assurer la cohérence de la casse dans les noms de fichiers
-    "baseUrl": "./",                      // Répertoire de base pour la résolution des modules
-    "paths": {                            // Chemins pour la résolution des modules
-      "@components/*": ["src/components/*"]
-    },
-    "outDir": "./dist",                   // Répertoire de sortie pour les fichiers compilés
-    "rootDir": "./src",                   // Répertoire racine des fichiers d'entrée
-    "removeComments": true,               // Supprimer les commentaires dans la sortie compilée
-    "sourceMap": true,                     // Générer des fichiers source map
-    "declaration": true,                  // Générer des fichiers de déclaration TypeScript (.d.ts)
-    "declarationMap": true                // Générer des fichiers de mappage de déclaration pour le débogage
+    "target": "ES2020",                             // version JS moderne, compatible Node
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "removeComments": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true
   },
-  "include": ["src/**/*"],                // Inclure tous les fichiers TypeScript dans le répertoire src
-  "exclude": ["node_modules", "dist"]     // Exclure les répertoires node_modules et dist
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

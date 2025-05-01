@@ -1,14 +1,23 @@
 {
   "name": "zotero-ts-api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "1.0.3",
+  "description": "A TypeScript API wrapper for Zotero",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "keywords": ["zotero", "typescript", "api"],
+  "author": "Ton Nom",
+  "license": "MIT",
   "type": "commonjs",
   "devDependencies": {
     "@types/node": "^22.14.1",
@@ -18,3 +27,4 @@
     "dotenv": "^16.5.0"
   }
 }
+
