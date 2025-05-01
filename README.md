@@ -124,7 +124,7 @@ constructor(data: ITagData)
 ---
 Below is a diagram illustrating the relationships between the main entities:
 
-```Mermaid
+```mermaid
 classDiagram
     class Library {
         +connect(): Promise<void>
