@@ -1,21 +1,40 @@
-# Ignorer le répertoire node_modules
-node_modules
+# Fichiers sources TypeScript (on publie uniquement le code compilé)
+src/
+tsconfig.json
 
-# Ignorer les fichiers de configuration de l'éditeur
-.vscode
-.idea
-
-# Ignorer les fichiers de test
-__tests__
-*.spec.ts
+# Fichiers de développement et test
+src/test.ts
 *.test.ts
+*.spec.ts
+__tests__/
 
-# Ignorer les fichiers de build locaux
-build
-
-# Ignorer les fichiers de configuration locaux
+# Fichiers de configuration locale
 .env
+.env.*
 .DS_Store
 
-# Ignorer les fichiers sources TypeScript si vous publiez uniquement le JavaScript compilé
-src
+# Éditeurs et IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Contrôle de version
+.git/
+.gitignore
+
+# Build et cache
+node_modules/
+build/
+.nyc_output/
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Fichiers temporaires
+.tmp/
+temp/
