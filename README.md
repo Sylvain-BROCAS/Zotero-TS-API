@@ -73,6 +73,7 @@ constructor(apiKey: string, libId: string, libraryType: 'users' | 'groups')
     - getAllItems(): Promise<Item[]>: Retrieve all items.
     - createCollection(name: string, parentCollection?: string): Promise<ZCollection>:     - Create a new collection.
     - createItem(itemData: Partial<IItemData>): Promise<Item>: Create a new item.
+    - getTags(): Promise<string[]>: Retrieve all tags in the library.
 
 ---
 `ZCollection`
