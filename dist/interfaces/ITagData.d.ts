@@ -1,5 +1,5 @@
 export interface ITagData {
     tag: string;
-    type: number;
+    type?: number;
 }
 //# sourceMappingURL=ITagData.d.ts.map

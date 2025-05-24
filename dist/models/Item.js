@@ -1,46 +1,46 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Item = void 0;
 const ZCreator_1 = require("./ZCreator");
 const ZTag_1 = require("./ZTag");
 class Item {
     constructor(data, apiKey, id, type) {
-        this.data = data;
+        this.data = { ...data };
         this.apiKey = apiKey;
         this.id = id;
         this.type = type;
         this.baseUrl = `https://api.zotero.org/${type}/${id}`;
     }
-    get key() {
-        return this.data.key;
-    }
-    get title() {
-        return this.data.title;
-    }
-    get itemType() {
-        return this.data.itemType;
+    get key() { return this.data.key; }
+    get title() { return this.data.title; }
+    get itemType() { return this.data.itemType; }
+    get url() { return this.data.url; }
+    get abstractNote() { return this.data.abstractNote; }
+    get date() { return this.data.date; }
+    get language() { return this.data.language; }
+    get collections() { return [...this.data.collections]; }
+    get tags() {
+        return this.data.tags.map(tag => new ZTag_1.ZTag(tag));
     }
     get creators() {
         return this.data.creators.map(creator => new ZCreator_1.ZCreator(creator));
     }
-    get tags() {
-        return this.data.tags.map(tag => new ZTag_1.ZTag(tag));
-    }
     set title(value) {
-        this.data.title = value;
+        if (!value?.trim()) {
+            throw new Error('Title cannot be empty');
+        }
+        this.data.title = value.trim();
     }
     set itemType(value) {
-        this.data.itemType = value;
+        if (!value?.trim()) {
+            throw new Error('Item type cannot be empty');
+        }
+        this.data.itemType = value.trim();
     }
+    set url(value) { this.data.url = value; }
+    set abstractNote(value) { this.data.abstractNote = value; }
+    set date(value) { this.data.date = value; }
+    set language(value) { this.data.language = value; }
     addCreator(creator) {
         this.data.creators.push(creator.toJSON());
     }
@@ -57,37 +57,33 @@ class Item {
             this.data.tags.splice(index, 1);
         }
     }
-    update() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/items/${this.data.key}`, {
-                method: 'PUT',
-                headers: {
-                    'Zotero-API-Key': this.apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(this.data)
-            });
-            if (!response.ok) {
-                throw new Error(`Failed to update item ${this.data.key}`);
-            }
+    async update() {
+        const response = await fetch(`${this.baseUrl}/items/${this.data.key}`, {
+            method: 'PUT',
+            headers: {
+                'Zotero-API-Key': this.apiKey,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.data)
         });
+        if (!response.ok) {
+            throw new Error(`Failed to update item ${this.data.key}: ${response.statusText}`);
+        }
     }
-    delete() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/items/${this.data.key}`, {
-                method: 'DELETE',
-                headers: {
-                    'Zotero-API-Key': this.apiKey,
-                    'If-Unmodified-Since-Version': this.data.version.toString()
-                }
-            });
-            if (!response.ok) {
-                throw new Error(`Failed to delete item ${this.data.key} (${`${this.baseUrl}/items/${this.data.key}`})`);
+    async delete() {
+        const response = await fetch(`${this.baseUrl}/items/${this.data.key}`, {
+            method: 'DELETE',
+            headers: {
+                'Zotero-API-Key': this.apiKey,
+                'If-Unmodified-Since-Version': this.data.version.toString()
             }
         });
+        if (!response.ok) {
+            throw new Error(`Failed to delete item ${this.data.key}: ${response.statusText}`);
+        }
     }
     toJSON() {
-        return Object.assign({}, this.data);
+        return { ...this.data };
     }
 }
 exports.Item = Item;

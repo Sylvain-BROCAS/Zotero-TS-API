@@ -1,124 +1,136 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Library = void 0;
 const ZCollection_1 = require("./ZCollection");
 const Item_1 = require("./Item");
+const ZOTERO_FIELDS = [
+    'itemType', 'title', 'creators', 'abstractNote', 'publicationTitle', 'url', 'tags', 'date', 'pages', 'volume', 'issue',
+    'publisher', 'place', 'ISBN', 'series', 'seriesTitle', 'seriesText', 'journalAbbreviation', 'language', 'DOI', 'ISSN',
+    'shortTitle', 'accessDate', 'archive', 'archiveLocation', 'libraryCatalog', 'callNumber', 'rights', 'extra', 'collections'
+];
 class Library {
     constructor(apiKey, libId, libraryType) {
+        if (!apiKey?.trim()) {
+            throw new Error('API key is required');
+        }
+        if (!libId?.trim()) {
+            throw new Error('Library ID is required');
+        }
         this.apiKey = apiKey;
         this.libId = libId;
         this.libraryType = libraryType;
         this.baseUrl = `https://api.zotero.org/${libraryType}/${libId}`;
     }
-    connect() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(this.baseUrl, {
-                headers: {
-                    'Zotero-API-Key': this.apiKey
-                }
+    async connect() {
+        try {
+            const response = await fetch(this.baseUrl, {
+                headers: { 'Zotero-API-Key': this.apiKey }
             });
             if (!response.ok) {
-                throw new Error(`Failed to connect to Zotero API -- API key : ${this.apiKey} -- ID : ${this.libId} -- Type : ${this.libraryType}`);
+                throw new Error(`Failed to connect to Zotero API (${response.status}): ${response.statusText}`);
             }
-            this.libraryData = yield response.json();
-        });
+            this.libraryData = await response.json();
+        }
+        catch (error) {
+            throw new Error(`Connection failed - API key: ${this.apiKey}, ID: ${this.libId}, Type: ${this.libraryType}. ${error}`);
+        }
+    }
+    get apiKeyValue() {
+        return this.apiKey;
     }
     get name() {
-        var _a;
-        return (_a = this.libraryData) === null || _a === void 0 ? void 0 : _a.name;
+        return this.libraryData?.name;
     }
     get id() {
-        var _a;
-        return (_a = this.libraryData) === null || _a === void 0 ? void 0 : _a.id;
+        return this.libraryData?.id;
     }
     get type() {
-        var _a;
-        return (_a = this.libraryData) === null || _a === void 0 ? void 0 : _a.type;
+        return this.libraryData?.type;
     }
-    getCollections() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/collections`, {
-                headers: {
-                    'Zotero-API-Key': this.apiKey
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch collections');
-            }
-            const collectionsData = yield response.json();
-            return collectionsData.map((collectionData) => new ZCollection_1.ZCollection(collectionData, this.apiKey, this.libId, this.libraryType));
-        });
+    async getCollections() {
+        const response = await this.makeRequest('/collections');
+        const collectionsData = await response.json();
+        return collectionsData.map(collectionData => new ZCollection_1.ZCollection(collectionData, this.apiKey, this.libId, this.libraryType));
     }
-    getAllItems() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(`${this.baseUrl}/items`, {
-                headers: {
-                    'Zotero-API-Key': this.apiKey
-                }
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch items');
-            }
-            const itemsData = yield response.json();
-            return itemsData.map((item) => new Item_1.Item(item.data, this.apiKey, this.libId, this.libraryType));
-        });
+    async getAllItems() {
+        const response = await this.makeRequest('/items');
+        const itemsData = await response.json();
+        return itemsData.map(item => new Item_1.Item(item.data, this.apiKey, this.libId, this.libraryType));
     }
-    createCollection(name, parentCollection) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const collectionData = {
-                key: '',
-                version: 0,
-                name,
-                parentCollection
-            };
-            const response = yield fetch(`${this.baseUrl}/collections`, {
-                method: 'POST',
-                headers: {
-                    'Zotero-API-Key': this.apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(collectionData)
-            });
-            if (!response.ok) {
-                throw new Error('Failed to create collection');
-            }
-            const createdCollection = yield response.json();
-            return new ZCollection_1.ZCollection(createdCollection, this.apiKey, this.libId, this.libraryType);
+    async createCollection(name, parentCollection) {
+        if (!name?.trim()) {
+            throw new Error('Collection name is required');
+        }
+        const collectionData = {
+            name: name.trim(),
+            parentCollection
+        };
+        const response = await this.makeRequest('/collections', {
+            method: 'POST',
+            body: JSON.stringify([collectionData])
         });
+        const created = await response.json();
+        return new ZCollection_1.ZCollection(created[0], this.apiKey, this.libId, this.libraryType);
     }
-    createItem(itemData) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const defaultItemData = {
-                itemType: 'book',
-                title: '',
-                creators: [],
-                tags: [],
-                collections: []
-            };
-            const newItemData = Object.assign(Object.assign({}, defaultItemData), itemData);
-            const response = yield fetch(`${this.baseUrl}/items`, {
-                method: 'POST',
-                headers: {
-                    'Zotero-API-Key': this.apiKey,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify([{ data: newItemData }])
-            });
-            if (!response.ok) {
-                throw new Error('Failed to create item');
-            }
-            const createdItems = yield response.json();
-            return new Item_1.Item(createdItems[0].data, this.apiKey, this.libId, this.libraryType);
+    async createItem(itemData) {
+        if (!itemData.title?.toString().trim()) {
+            throw new Error('A title is required to create a Zotero item');
+        }
+        const { validData, unknownFields } = this.validateItemData(itemData);
+        if (unknownFields.length > 0) {
+            console.warn(`[Zotero] Unknown fields ignored: ${unknownFields.join(', ')}`);
+        }
+        validData.itemType ?? (validData.itemType = 'webpage');
+        const response = await this.makeRequest('/items', {
+            method: 'POST',
+            body: JSON.stringify([{ data: validData }])
         });
+        const created = await response.json();
+        const itemDataResponse = this.extractCreatedItemData(created);
+        return new Item_1.Item(itemDataResponse, this.apiKey, this.libId, this.libraryType);
+    }
+    async getTags() {
+        const response = await this.makeRequest('/tags');
+        const tagsData = await response.json();
+        return tagsData.map(tag => tag.tag);
+    }
+    async makeRequest(endpoint, options = {}) {
+        const response = await fetch(`${this.baseUrl}${endpoint}`, {
+            ...options,
+            headers: {
+                'Zotero-API-Key': this.apiKey,
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`API request failed (${response.status}): ${response.statusText}`);
+        }
+        return response;
+    }
+    validateItemData(itemData) {
+        const validData = {};
+        const unknownFields = [];
+        for (const [key, value] of Object.entries(itemData)) {
+            if (ZOTERO_FIELDS.includes(key)) {
+                validData[key] = value;
+            }
+            else {
+                unknownFields.push(key);
+            }
+        }
+        return { validData, unknownFields };
+    }
+    extractCreatedItemData(created) {
+        if (Array.isArray(created)) {
+            return created[0]?.data;
+        }
+        if (created && typeof created === 'object' && 'successful' in created) {
+            const successful = created.successful;
+            const firstKey = Object.keys(successful)[0];
+            return successful[firstKey]?.data;
+        }
+        throw new Error('Zotero API did not return a valid created item');
     }
 }
 exports.Library = Library;

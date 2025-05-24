@@ -3,22 +3,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ZTag = void 0;
 class ZTag {
     constructor(data) {
-        this.data = data;
+        this.data = { ...data };
     }
-    get tag() {
+    get name() {
         return this.data.tag;
     }
     get type() {
         return this.data.type;
     }
-    set tag(value) {
-        this.data.tag = value;
+    set name(value) {
+        if (!value?.trim()) {
+            throw new Error('Tag name cannot be empty');
+        }
+        this.data.tag = value.trim();
     }
     set type(value) {
         this.data.type = value;
     }
     toJSON() {
-        return Object.assign({}, this.data);
+        return { ...this.data };
     }
 }
 exports.ZTag = ZTag;

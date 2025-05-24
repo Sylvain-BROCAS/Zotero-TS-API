@@ -1,1 +1,1 @@
-{"version":3,"file":"ITagData.d.ts","sourceRoot":"","sources":["../../src/interfaces/ITagData.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,QAAQ;IACvB,GAAG,EAAE,MAAM,CAAC;IACZ,IAAI,EAAE,MAAM,CAAC;CACd"}
+{"version":3,"file":"ITagData.d.ts","sourceRoot":"","sources":["../../src/interfaces/ITagData.ts"],"names":[],"mappings":"AAAA,MAAM,WAAW,QAAQ;IACvB,GAAG,EAAE,MAAM,CAAC;IACZ,IAAI,CAAC,EAAE,MAAM,CAAC;CACf"}

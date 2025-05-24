@@ -28,6 +28,6 @@ export interface IItemData {
     dateModified?: string;
     tags: ITagData[];
     collections: string[];
-    relations: Record<string, string>;
+    relations?: Record<string, string>;
 }
 //# sourceMappingURL=IItemData.d.ts.map
