@@ -29,5 +29,5 @@ export interface IItemData {
   dateModified?: string;
   tags: ITagData[];
   collections: string[];
-  relations: Record<string, string>;
+  relations?: Record<string, string>; // ← Rendre optionnelle
 }
