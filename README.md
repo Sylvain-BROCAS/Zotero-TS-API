@@ -350,14 +350,9 @@ classDiagram
 ```
 
 ## Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes and add tests
-4. Run the test suite: `npm test`
-5. Commit your changes: `git commit -am 'Add feature'`
-6. Push to the branch: `git push origin feature-name`
-7. Submit a pull request
+Feel free to contribute. Here are the main points I want to improve:
+- Add files (pdf, png, ...)
+- Automatic abstract (useful ?)
 
 ## License
 
